@@ -101,6 +101,8 @@ nav a svg {
     fill: var(--sec-nav-color);
     background-color: var(--main-nav-color);
     border-radius: 0 0 3px 3px;
+    width: 100%;
+    height: auto;
 }
 
 main {
