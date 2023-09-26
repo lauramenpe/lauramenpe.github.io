@@ -97,14 +97,36 @@
                     </a>
                 </div>
                 <div class="section-body">
-                    <svg id="equalizer" width="100%" height="300px">
-                        <defs>
-                          <linearGradient id="b1xGradient">
-                            <stop offset="0%" style="stop-color: #18e589;" />
-                            <stop offset="100%" style="stop-color: #2870f0;" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                    <div id="am-eq">
+                        <svg id="equalizer" width="70vw" height="50vh">
+                            <defs>
+                            <linearGradient id="b1xGradient">
+                                <stop offset="0%" style="stop-color: #18e589;" />
+                                <stop offset="100%" style="stop-color: #2870f0;" />
+                            </linearGradient>
+                            <filter id="f1">
+                                <feGaussianBlur stdDeviation="4" />
+                            </filter>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div id="am-data-container">
+                        <div id="am-data-1" class="am-data">
+                            <p>I was born in Oviedo, Asturias and raised up here, I also studied Software Engineering in the Oviedo University.<br/>
+                                Despise I spent my whole live in the north part of Spain, I love the weather, the landscape and the people.
+                            </p>
+                        </div>
+                        <div id="am-data-2" class="am-data">
+                            <p>One of my main hobbies is <b>music</b>.<br/>
+                            I studied violin in the Professional Conservatory of Music in Oviedo, where I was teached to play the piano too.<br/>
+                            Later than that, I started to play the electric guitar and bass with my friends for fun.<br/>
+                            We participated in several contests, like this <a href="">one</a>.
+                            </p>
+                        </div>
+                        <div id="am-data-3" class="am-data">
+                            <p>Another passion of mine are <b>videogames</b>.<br/></p>
+                        </div>
+                    </div>
                 </div>
             </section>
             <section id="studies">

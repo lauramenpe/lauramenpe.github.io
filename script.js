@@ -1,11 +1,14 @@
 const svg = d3.select("#equalizer");
+
 const points = 
-  [[0, 100],
+  [[0, 95],
+  [10, 100],
   [120, 85],
   [150, 35],
   [180, 70],
   [250, 20],
-  [300, 60]];
+  [290, 60],
+  [300, 75]];
 
 // Scales
 const lineWidth = 2;
@@ -47,7 +50,7 @@ svg.append("g")
     .call(yAxis);
 
 // Area 
-const yAxisForArea = 200;
+const yAxisForArea = 254;
 
 const areaGenerator = d3.area()
   .x((d) => scaleX(d[0]))
@@ -82,13 +85,38 @@ line.transition("grow")
   });
 
 // Points
-const radio = 10;
-
-svg.selectAll("eq-circles")
-  .data(points)
-  .enter()
-  .append("circle")
+const radio = 6;
+var position = 0;
+points.forEach(element => {
+  svg.append("circle")
     .attr("stroke", "none")
-    .attr("cx", (d) => scaleX(d[0]))
-    .attr("cy", (d) => scaleY(d[1]))
-    .attr("r", radio);
+    .attr("id", position)
+    .attr("cx", () => scaleX(element[0]))
+    .attr("cy", () => scaleY(element[1]))
+    .attr("r", radio)
+    .on("click", (event) => showCard(event));
+  position++;
+});
+
+function showCard(event) {
+  var parentContainer = document.getElementById("am-data-container");
+
+  for (const card of parentContainer.children) {
+    card.style.display = "none";
+  }
+
+  var selectedCard = document.getElementById(`am-data-${event.srcElement.id}`)
+  selectedCard.style.display = "block";
+
+}
+
+// Border
+var borderPath = svg.append("rect")
+  .attr("x", 0)
+  .attr("y", 0)
+  .attr("height", parseFloat(svg.style("height")))
+  .attr("width", parseFloat(svg.style("width")))
+  .attr("filter", "url(#f1)")
+  .style("stroke", "#2F2F2F")
+  .style("fill", "none")
+  .style("stroke-width", 20);

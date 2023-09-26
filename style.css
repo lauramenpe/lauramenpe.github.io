@@ -184,6 +184,27 @@ footer {
 .section-body {
     width: 100%;
     height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.am-data {
+    padding: 12px 20px 15px 20px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: -5px -5px 9px rgba(94, 94, 94, 0.45), 5px 5px 9px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+#am-data-1 {
+    display: block;
+}
+
+.am-data p {
+    margin: 0;
 }
 
 .axis path, 
