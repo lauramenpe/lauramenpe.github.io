@@ -197,10 +197,12 @@ footer {
     text-align: center;
     box-shadow: -5px -5px 9px rgba(94, 94, 94, 0.45), 5px 5px 9px rgba(0, 0, 0, 0.3);
     display: none;
+    opacity: 0;
 }
 
-#am-data-1 {
-    display: block;
+#am-eq {
+    width: 100%;
+    height: 50vh;
 }
 
 .am-data p {

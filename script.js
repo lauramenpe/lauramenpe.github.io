@@ -1,14 +1,16 @@
 const svg = d3.select("#equalizer");
 
 const points = 
-  [[0, 95],
-  [10, 100],
-  [120, 85],
-  [150, 35],
-  [180, 70],
-  [250, 20],
-  [290, 60],
-  [300, 75]];
+  [
+    { x: 0, y: 100 },
+    { x: 10, y: 100 },
+    { x: 120, y: 85 },
+    { x: 150, y: 35 },
+    { x: 180, y: 70 },
+    { x: 250, y: 20 },
+    { x: 290, y: 60 },
+    { x: 300, y: 75 }
+  ];
 
 // Scales
 const lineWidth = 2;
@@ -50,13 +52,13 @@ svg.append("g")
     .call(yAxis);
 
 // Area 
-const yAxisForArea = 254;
+const yAxisForArea = 153;
 
 const areaGenerator = d3.area()
-  .x((d) => scaleX(d[0]))
-  .y1((d) => scaleY(d[1]))
+  .x((d) => scaleX(d.x))
+  .y1((d) => scaleY(d.y))
   .y0(() => yAxisForArea)
-  .curve(d3.curveCardinal);
+  .curve(d3.curveMonotoneX);
 
 svg.append('path')
   .attr('class', 'area')
@@ -65,24 +67,18 @@ svg.append('path')
 
 // Line (draw & animate)
 const interpolator = d3.line()
-  .curve(d3.curveCardinal)
-  .x((d) => scaleX(d[0]))
-  .y((d) => scaleY(d[1]));
+  .curve(d3.curveMonotoneX)
+  .x((d) => scaleX(d.x))
+  .y((d) => scaleY(d.y));
 
 const line = svg
   .append("path")
   .datum(points)
-  .attr("stroke", "url(#b1xGradient)")
+  .attr("id", "eq-path")
+  .attr("stroke", "#5889A2")
   .attr("stroke-width", lineWidth)
   .attr("fill", "none")
   .attr("d", (d) => interpolator(d));
-
-line.transition("grow")
-  .duration(900)
-  .attrTween("stroke-dasharray", function() {
-    const len = this.getTotalLength();
-    return (t) => d3.interpolateString("0," + len, len + ",0")(t);
-  });
 
 // Points
 const radio = 6;
@@ -90,25 +86,13 @@ var position = 0;
 points.forEach(element => {
   svg.append("circle")
     .attr("stroke", "none")
-    .attr("id", position)
-    .attr("cx", () => scaleX(element[0]))
-    .attr("cy", () => scaleY(element[1]))
+    .attr("id", `point-${position}`)
+    .attr("cx", () => scaleX(element.x))
+    .attr("cy", () => scaleY(element.y))
     .attr("r", radio)
-    .on("click", (event) => showCard(event));
+    // .on("click", (event) => showCard(event));
   position++;
 });
-
-function showCard(event) {
-  var parentContainer = document.getElementById("am-data-container");
-
-  for (const card of parentContainer.children) {
-    card.style.display = "none";
-  }
-
-  var selectedCard = document.getElementById(`am-data-${event.srcElement.id}`)
-  selectedCard.style.display = "block";
-
-}
 
 // Border
 var borderPath = svg.append("rect")
@@ -120,3 +104,28 @@ var borderPath = svg.append("rect")
   .style("stroke", "#2F2F2F")
   .style("fill", "none")
   .style("stroke-width", 20);
+
+// Scrollytelling
+var path = document.querySelector('#eq-path');
+var pathLength = path.getTotalLength();
+
+//Make the line disappear
+path.style.strokeDasharray = pathLength + ' ' + pathLength;
+path.style.strokeDashoffset = pathLength;
+
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+var scaledPoints = points.map(point => [scaleX(point.x), scaleY(point.y)]);
+console.log(scaledPoints);
+
+ScrollTrigger.create({
+  trigger: "#about-me",
+  pin: true,
+  start: "top top",
+  end: "max",
+  onUpdate: self => {
+    // Draw the line
+    var drawLength = pathLength * self.progress.toFixed(3);
+    path.style.strokeDashoffset = pathLength - drawLength;
+  }
+});
